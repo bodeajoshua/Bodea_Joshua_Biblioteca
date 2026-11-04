@@ -1,0 +1,27 @@
+@model IEnumerable<sem1.Models.BookRow>
+
+@{
+    ViewData["Title"] = "Catalog";
+}
+
+<h2>Catalogul Bibliotecii</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Titlu</th>
+            <th>Autor</th>
+            <th>Număr comenzi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.Orders</td>
+            </tr>
+        }
+    </tbody>
+</table>
