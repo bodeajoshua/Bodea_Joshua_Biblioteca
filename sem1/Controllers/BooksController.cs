@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.ML;
 using sem1.Models;
 using System.Diagnostics;
 
@@ -56,9 +57,13 @@ public class BooksController : Controller
             return NotFound();
         }
 
-        var book = await _context.Book
-            .FirstOrDefaultAsync(m => m.ID == id);
-        if (book == null)
+    var book = await _context.Book
+        .Include(b => b.Author)
+        .Include(b => b.Genre)
+        .Include(b => b.Orders).ThenInclude(o => o.Customer)
+        .AsNoTracking()
+.FirstOrDefaultAsync(m => m.ID == id);
+    if (book == null)
         {
             return NotFound();
         }
