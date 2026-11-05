@@ -18,7 +18,7 @@ public class BooksController : Controller
     }
 
     // GET: Books
-    public async Task<IActionResult> Index(string? sortOrder, string? currentFilter, string? searchString, int? pageNumber)
+    public async Task<IActionResult> Index(string? sortOrder, string? currentFilter, string? searchString, int? genreID, int? pageNumber)
     {
         ViewData["CurrentSort"] = sortOrder;
         ViewData["TitleSortParm"] = sortOrder == "title" ? "title_desc" : "title";
@@ -34,7 +34,12 @@ public class BooksController : Controller
             searchString = currentFilter;
         }
 
+
+        
+
         ViewData["CurrentFilter"] = searchString;
+
+        ViewData["GenreID"] = new SelectList(_context.Genre.OrderBy(g => g.Name),"ID","Name",genreID);
 
         var books = _context.Book
             .Include(b => b.Author)
@@ -44,6 +49,11 @@ public class BooksController : Controller
         if (!string.IsNullOrEmpty(searchString))
         {
             books = books.Where(b => b.Title.Contains(searchString));
+        }
+
+        if (genreID.HasValue)
+        {
+            books = books.Where(b => b.GenreID == genreID.Value);
         }
 
         books = sortOrder switch

@@ -43,7 +43,7 @@ public class AuthorsController : Controller
         var author = await _context.Author
             .Include(a => a.Books)
                 .ThenInclude(b => b.Orders)
-            .FirstOrDefaultAsync(m => m.CustomerID == id); 
+            .FirstOrDefaultAsync(m => m.ID == id); 
 
         if (author == null) return NotFound();
 

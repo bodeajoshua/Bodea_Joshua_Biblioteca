@@ -41,25 +41,27 @@ GROUP BY b.ID, b.Title, a.FirstName, a.LastName, g.Name, b.Price;]
 
 ## S3 · Filtrul variantei mele (V3)
 
-\* Filtrul implementat: \*\*\\\[ ]\*\*
+\* Filtrul implementat: \*\*\\\[ gen]\*\*
 \* Interogarea , cu filtrul aplicat:
 
 ```sql
-\\\[lipiți aici]
+\\\[SELECT *
+FROM Book
+WHERE GenreID = 2;]
 ```
 
 ## S4 · Folosirea AI
 
-\* \*\*Instrumente folosite:\*\* \\\[nume, sau „nu am folosit”]
-\* \*\*La ce pași:\*\* \\\[ ]
+\* \*\*Instrumente folosite:\*\* \\\[gemini]
+\* \*\*La ce pași:\*\* \\\[unde am intampinat erori, mai ales in dezvoltare ]
 \* \*\*Un exemplu de cerere trimisă:\*\*
 
 > \\\[textul cererii]
 
 \* \*\*O situație în care am corectat sau respins un răspuns AI\*\* (sau, dacă nu am folosit AI, o eroare întâlnită și cum am găsit-o):
 
-  \* Ce a propus AI-ul / care era eroarea: \\\[ ]
-  \* Cum mi-am dat seama că e greșit sau ineficient: \\\[ ]
+  \* Ce a propus AI-ul / care era eroarea: \\\[ aveam erori la deschiderea paginii /orders, nu se afisa pagina, doar erori. Am corectat eu eroarea lui]
+  \* Cum mi-am dat seama că e greșit sau ineficient: \\\[pagina nu functiona, doar afisa erorile]
   \* Codul inițial:
 
 ```csharp
@@ -76,6 +78,6 @@ GROUP BY b.ID, b.Title, a.FirstName, a.LastName, g.Name, b.Price;]
 
 ## Ce nu am reușit (opțional)
 
-\\\[Ce nu funcționează sau nu este complet și de ce. Este mai bine scris aici decât descoperit la corectare.]
+\\\[nu am reusit sa indeplinesc sarcinile 3 si 4 deoarece am intamplinat multe erori pe parcursul dezvoltarii si a trebuit sa le rezolv. Timpul a fost problema.]
 
 
