@@ -19,10 +19,13 @@ public class BooksController : Controller
     }
 
     // GET: Books
-    public async Task<IActionResult> Index(string? sortOrder, string? searchString)
+    public async Task<IActionResult> Index(string? sortOrder, string? currentFilter, string? searchString, int? pageNumber)
     {
+        ViewData["CurrentSort"] = sortOrder;
         ViewData["TitleSortParm"] = sortOrder == "title" ? "title_desc" : "title";
         ViewData["PriceSortParm"] = sortOrder == "price" ? "price_desc" : "price";
+        if (searchString != null) pageNumber = 1;
+            else searchString = currentFilter;
         ViewData["CurrentFilter"] = searchString;
         var books = _context.Book.AsQueryable();
         if (!string.IsNullOrEmpty
@@ -35,13 +38,13 @@ public class BooksController : Controller
             "price_desc" => books.OrderByDescending(b => b.Price),
             _ => books.OrderByDescending(b => b.Price) // [V2] TODO: înlocuiți cu sortarea implicită din varianta voastră / am inlocuit cu conform pret descresc
         };
-        var rows = await books
+        var rows = books.Select(b => new BookListItem
         .Select(b => new BookListItem(b.ID, b.Title,
         b.Author != null ? b.Author.FirstName + " " + b.Author.LastName : "",
         b.Genre != null ? b.Genre.Name : "",
         b.Price, b.Orders.Count))
-        .ToListAsync();
-        return View(rows);
+        const int pageSize = 4; // NOU · [V1] TODO: înlocuiți 10 cu valoarea din varianta voastră
+         return View(await PaginatedList<BookListItem>.CreateAsync(rows, pageNumber ?? 1, pageSize)); // NOU
     }
 }
 
