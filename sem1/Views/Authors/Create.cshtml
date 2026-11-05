@@ -1,0 +1,36 @@
+@model IEnumerable<sem1.Models.Order>
+
+@{
+    ViewData["Title"] = "Index - Comenzi";
+}
+
+<h1>Lista Comenzi</h1>
+
+<p>
+    <a asp-action="Create">Creează comandă nouă</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID Comandă</th>
+            <th>Data</th>
+            <th>Acțiuni</th>
+        </tr>
+    </thead>
+    <tbody>
+    @if (Model != null)
+    {
+        @foreach (var item in Model) {
+            <tr>
+                <td>@item.OrderID</td>
+                <td>@item.OrderDate.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.OrderID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.OrderID">Delete</a>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>

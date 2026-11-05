@@ -18,19 +18,24 @@
 
 ## S1 · Comenzile
 
-\* Protecția la overposting aleasă: \*\*\\\[ViewModel]\*\*
-\* De ce am ales-o: \\\[ Pentru a optimiza interogările bazei de date și a afișa direct datele necesare în catalog (BookListItem)]
+\* Protecția la overposting aleasă: \*\*\\\[ViewModel], [Atributul Bind pe acțiunile Create și Edit]\*\*
+\* De ce am ales-o: \\\[ Pentru a optimiza interogările bazei de date și a afișa direct datele necesare în catalog (BookListItem)], [Pentru a specifica în mod explicit o listă albă (whitelist) cu proprietățile entității Order ce pot fi preluate din cererile HTTP POST, prevenind astfel modificarea neautorizată a datelor prin atacuri de tip overposting.]
 
 ## S2 · Pagina unui autor și sortarea după autor
 
-\* Indicatorul V4 (\\\[ce indicator]) este calculat cu interogarea:
+\* Indicatorul V4 (\\\[numărul de comenzi pe carte / `Orders.Count`]) este calculat cu interogarea:
 
 ```sql
-\\\[lipiți aici]
+\\\[SELECT b.ID, b.Title, a.FirstName, a.LastName, g.Name, b.Price, COUNT(o.ID) AS OrdersCount
+FROM Book AS b
+LEFT JOIN Author AS a ON b.AuthorID = a.ID
+LEFT JOIN Genre AS g ON b.GenreID = g.ID
+LEFT JOIN [Order] AS o ON b.ID = o.BookID
+GROUP BY b.ID, b.Title, a.FirstName, a.LastName, g.Name, b.Price;]
 ```
 
-\* De ce `OrderBy(b => b.Author.FullName)` aruncă o excepție? \\\[ ]
-\* Cum am rezolvat: \\\[ ]
+\* De ce `OrderBy(b => b.Author.FullName)` aruncă o excepție? \\\[Deoarece FullName este o proprietate calculată doar în codul C# (prin concatenarea prenumelui și numelui), nefiind o coloană fizică în tabelul bazei de date pe care motorul SQL să poată face sortarea direct]
+\* Cum am rezolvat: \\\[Am sortat folosind proprietățile reale ]
 
 
 

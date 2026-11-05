@@ -1,0 +1,60 @@
+@model IEnumerable<sem1.Models.Order>
+
+@{
+    ViewData["Title"] = "Index - Comenzi";
+}
+
+<h1>Lista Comenzilor</h1>
+
+<!-- Formular de filtrare după cititor -->
+<form asp-action="Index" method="get">
+    <label>Filtrează după cititor:</label>
+
+   @*  <select name="customerID" class="form-control" asp-items="ViewBag.CustomerID">
+        <option value="">Toți cititorii</option>
+    </select> *@
+    <select name="customerID" class="form-control">
+        <option value="">Toți cititorii</option>
+        <option value="1">Cititor test</option>
+    </select>
+
+    <button type="submit" class="btn btn-primary mt-2">
+        Filtrează
+    </button>
+</form>
+
+<p>
+    <a asp-action="Create">Creează comandă nouă</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Cititor</th>
+            <th>Titlu Carte</th>
+            <th>Data Comenzii</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Book.Title)
+                </td>
+                <td>
+                    @item.OrderDate.ToString("yyyy-MM-dd")
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.OrderID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.OrderID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.OrderID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
