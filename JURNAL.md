@@ -18,7 +18,7 @@
 
 ## S1 · Comenzile
 
-\* Protecția la overposting aleasă: \*\*\\\[Bind / TryUpdateModelAsync / ViewModel]\*\*
+\* Protecția la overposting aleasă: \*\*\\\[ViewModel]\*\*
 \* De ce am ales-o: \\\[ ]
 
 ## S2 · Pagina unui autor și sortarea după autor

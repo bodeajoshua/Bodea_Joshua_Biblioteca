@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using sem1.Models;
 using System.Diagnostics;
@@ -56,6 +57,9 @@ public class BooksController : Controller
     // GET: BOOKS/Create
     public IActionResult Create()
     {
+        ViewData["AuthorID"] = new SelectList(_context.Author.OrderBy(a => a.LastName), "ID",
+            "FullName");
+        ViewData["GenreID"] = new SelectList(_context.Genre.OrderBy(g => g.Name), "ID", "Name");
         return View();
     }
 
@@ -83,6 +87,10 @@ public class BooksController : Controller
         var book = await _context.Book.FindAsync(id);
 
         if (book == null) return NotFound();
+
+        ViewData["AuthorID"] = new SelectList(_context.Author.OrderBy(a => a.LastName), "ID",
+            "FullName");
+        ViewData["GenreID"] = new SelectList(_context.Genre.OrderBy(g => g.Name), "ID", "Name");
 
         var vm = new BookEditViewModel
         {
