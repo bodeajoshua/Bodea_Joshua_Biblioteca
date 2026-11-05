@@ -1,45 +1,34 @@
 @model sem1.Models.Author
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalii Autor";
 }
 
-<h1>Details</h1>
+<h1>Detalii Autor: @Model.FullName</h1>
 
 <div>
-    <h4>Author</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FullName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(m => m.FullName)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Books)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Books)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <h4>Cărțile scrise</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Titlu</th>
+                <th>Gen</th>
+                <th>Preț</th>
+                <th>Număr comenzi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model.Books)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Genre</td>
+                    <td>@book.Price</td>
+                    <td>@book.Orders?.Count()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <p><strong>Număr total comenzi pentru autor: </strong> @Model.Books.Sum(b => b.Orders?.Count() ?? 0)</p>
 </div>

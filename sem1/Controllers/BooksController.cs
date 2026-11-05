@@ -23,6 +23,7 @@ public class BooksController : Controller
         ViewData["CurrentSort"] = sortOrder;
         ViewData["TitleSortParm"] = sortOrder == "title" ? "title_desc" : "title";
         ViewData["PriceSortParm"] = sortOrder == "price" ? "price_desc" : "price";
+        ViewData["AuthorSortParm"] = sortOrder == "author" ? "author_desc" : "author";
 
         if (searchString != null)
         {
@@ -51,6 +52,8 @@ public class BooksController : Controller
             "title_desc" => books.OrderByDescending(b => b.Title),
             "price" => books.OrderBy(b => b.Price),
             "price_desc" => books.OrderByDescending(b => b.Price),
+            "author" => books.OrderBy(b => b.Author != null ? b.Author.FullName : ""),
+            "author_desc" => books.OrderByDescending(b => b.Author != null ? b.Author.FullName : ""),
             _ => books.OrderByDescending(b => b.Price) // Sortarea implicită V2 (preț descrescător)
         };
 

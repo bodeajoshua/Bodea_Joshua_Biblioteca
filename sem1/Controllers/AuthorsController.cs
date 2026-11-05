@@ -19,19 +19,33 @@ public class AuthorsController : Controller
     }
 
     // GET: AUTHORS/Details/5
+    /* public async Task<IActionResult> Details(int? id)
+     {
+         if (id == null)
+         {
+             return NotFound();
+         }
+
+         var author = await _context.Author
+             .FirstOrDefaultAsync(m => m.ID == id);
+         if (author == null)
+         {
+             return NotFound();
+         }
+
+         return View(author);
+     }*/
+
     public async Task<IActionResult> Details(int? id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
+        if (id == null) return NotFound();
 
         var author = await _context.Author
-            .FirstOrDefaultAsync(m => m.ID == id);
-        if (author == null)
-        {
-            return NotFound();
-        }
+            .Include(a => a.Books)
+                .ThenInclude(b => b.Orders)
+            .FirstOrDefaultAsync(m => m.CustomerID == id); 
+
+        if (author == null) return NotFound();
 
         return View(author);
     }
