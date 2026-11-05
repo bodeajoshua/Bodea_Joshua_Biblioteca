@@ -14,6 +14,17 @@ var connectionString = builder.Configuration.GetConnectionString("LibraryContext
 
 builder.Services.AddDbContext<LibraryContext>(options => options.UseSqlServer(connectionString));
 
+// Înregistrăm o singură dată clientul Ollama ca IChatClient
+var ollamaClient = new OllamaChatClient(
+    new Uri("http://localhost:11434/"),
+    modelId: "llama3"
+);
+builder.Services.AddSingleton(ollamaClient);
+builder.Services.AddSingleton<IChatClient>(ollamaClient);
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services
