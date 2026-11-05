@@ -19,7 +19,7 @@
 ## S1 · Comenzile
 
 \* Protecția la overposting aleasă: \*\*\\\[ViewModel]\*\*
-\* De ce am ales-o: \\\[ ]
+\* De ce am ales-o: \\\[ Pentru a optimiza interogările bazei de date și a afișa direct datele necesare în catalog (BookListItem)]
 
 ## S2 · Pagina unui autor și sortarea după autor
 

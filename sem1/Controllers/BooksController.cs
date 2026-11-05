@@ -19,22 +19,31 @@ public class BooksController : Controller
     }
 
     // GET: Books
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string? sortOrder, string? searchString)
     {
-        var sw = Stopwatch.StartNew();
-
-        var rows = await _context.Book
-            .Select(b => new BookRow(
-                b.Title,
-                b.Author!.FirstName + " " + b.Author.LastName,
-                b.Orders.Count
-            ))
-            .ToListAsync();
-
-        _logger.LogInformation("Index: {Ms} ms", sw.ElapsedMilliseconds);
-
+        ViewData["TitleSortParm"] = sortOrder == "title" ? "title_desc" : "title";
+        ViewData["PriceSortParm"] = sortOrder == "price" ? "price_desc" : "price";
+        ViewData["CurrentFilter"] = searchString;
+        var books = _context.Book.AsQueryable();
+        if (!string.IsNullOrEmpty
+            books = books.Where(b => b.Title.Contains(searchString));
+        books = sortOrder switch
+        {
+            "title" => books.OrderBy(b => b.Title),
+            "title_desc" => books.OrderByDescending(b => b.Title),
+            "price" => books.OrderBy(b => b.Price),
+            "price_desc" => books.OrderByDescending(b => b.Price),
+            _ => books.OrderByDescending(b => b.Price) // [V2] TODO: înlocuiți cu sortarea implicită din varianta voastră / am inlocuit cu conform pret descresc
+        };
+        var rows = await books
+        .Select(b => new BookListItem(b.ID, b.Title,
+        b.Author != null ? b.Author.FirstName + " " + b.Author.LastName : "",
+        b.Genre != null ? b.Genre.Name : "",
+        b.Price, b.Orders.Count))
+        .ToListAsync();
         return View(rows);
     }
+}
 
     // GET: BOOKS/Details/5
     public async Task<IActionResult> Details(int? id)
