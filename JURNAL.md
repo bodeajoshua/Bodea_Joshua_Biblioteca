@@ -56,22 +56,24 @@ WHERE GenreID = 2;]
 \* \*\*La ce pași:\*\* \\\[unde am intampinat erori, mai ales in dezvoltare ]
 \* \*\*Un exemplu de cerere trimisă:\*\*
 
-> \\\[textul cererii]
+> \\\[Cum integrez filtrul pe bază de gen și parametrul int? genreID în metoda Index din BooksController?]
 
 \* \*\*O situație în care am corectat sau respins un răspuns AI\*\* (sau, dacă nu am folosit AI, o eroare întâlnită și cum am găsit-o):
 
-  \* Ce a propus AI-ul / care era eroarea: \\\[ aveam erori la deschiderea paginii /orders, nu se afisa pagina, doar erori. Am corectat eu eroarea lui]
-  \* Cum mi-am dat seama că e greșit sau ineficient: \\\[pagina nu functiona, doar afisa erorile]
+  \* Ce a propus AI-ul / care era eroarea: \\\[ o interogare în `AuthorsController` care căuta după o proprietate inexistentă (CustomerID) pe entitatea Author, ceea ce a generat eroarea de compilare CS1061]
+  \* Cum mi-am dat seama că e greșit sau ineficient: \\\[Prin verificarea ferestrei de Error List care a indicat explicit ca entitatea Author nu conține o definiție pentru CustomerID]
   \* Codul inițial:
 
 ```csharp
-\\\[ ]
+\\\[var author = await _context.Author
+            .FirstOrDefaultAsync(m => m.CustomerID == id); ]
 ```
 
 \* Codul final:
 
 ```csharp
-\\\[ ]
+\\\[var author = await _context.Author
+            .FirstOrDefaultAsync(m => m.ID == id); ]
 ```
 
 \\---
