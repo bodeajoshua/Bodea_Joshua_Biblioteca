@@ -5,7 +5,6 @@
 }
 
 <h1>Create</h1>
-
 <h4>Book</h4>
 <hr />
 <div class="row">
@@ -39,9 +38,19 @@
 
             <div class="form-group">
                 <label asp-for="Genre" class="control-label"></label>
-                <input asp-for="Genre" class="form-control" />
+                <input asp-for="Genre" class="form-control" id="Genre" />
                 <span asp-validation-for="Genre" class="text-danger"></span>
             </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" id="bookDescription"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <!-- butonul de sugerare a genului -->
+            <button type="button" id="btnSuggestGenre" class="btn btn-secondary mt-2 mb-3">Sugerează genul</button>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -52,3 +61,36 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <!-- JavaScript apelează API-ul -->
+    <script>
+        document.getElementById('btnSuggestGenre').addEventListener('click', function () {
+            var desc = document.getElementById('bookDescription').value;
+
+            fetch('/Books/SuggestGenre', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value
+                },
+                body: JSON.stringify({ description: desc })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.genre) {
+                    var genreInput = document.getElementById('Genre');
+                    if (genreInput) {
+                        genreInput.value = data.genre;
+                    }
+                    alert(`Gen sugerat: ${data.genre} (Încredere: ${(data.confidence * 100).toFixed(1)}%)`);
+                }
+            })
+            .catch(error => console.error('Erore la sugerarea genului:', error));
+        });
+    </script>
+}

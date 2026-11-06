@@ -103,3 +103,21 @@ Pasul A3:
 Testare API Recomandări (Cold Start vs Model ML)
 -cititorul 5 (Utilizator existent): Primește recomandări personalizate calculate prin ML (fallback: false), bazate pe scorurile prezise de model (ex. Fata cu un tatuaj de dragon, scor ~3.93). Parametrul top=3 limiteaza corect numarul rezultatelor
 -Cititorul 999 (Cold Start -utilizator necunoscut): Declanșează mecanismul de fallback (fallback: true), primind cele mai populare și bine cotate cărți din baza de date pe baza mediilor de evaluare
+
+Pasul A4:
+MicroAccuracy: 74.3%
+MacroAccuracy: 74.2%
+De ce difera?
+MicroAccuracy calculeaza acuratetea globală raportând numarul de preziceri corecte la numărul total de exemple din intregul set de test. Din acest motiv, ea manipulata de clasele majore (genurile care conțin cele mai multe exemple)
+MacroAccuracy calculează acuratețea pentru fiecare clasa în mod individual, dupa care face media aritmetică simpla a acestora, si trateaza fiecare gen cu aceeași pondere (indiferent dacă are multe ex sau doar câteva)
+difera pentru ca clasele cu mai puține exemple au un volum redus de date de antrenare, modelul învața mai greu specificul lor și obține adesea o acuratețe mai mică pe ele
+Citiți matricea de confuzie: ce genuri se confundă cel mai des? Este logic?
+Poezie-Nuvelă se confunda. Ambele sunt forme literare de dimensiuni mai reduse comparativ cu un roman amplu
+Confuziile sunt logice, deoarece unele genuri literare au vocabular și caracteristici comune. Cele mai bune rezultate sunt la Fantasy recall 0.9310, iar cele mai slabe la Programare  0.6176 și Nuvelă 0.6250.
+
+ Testați cu descrierea unei cărți din books.csv (de exemplu, Dune). Ghicește genul?
+ Da, Gen sugerat: Fantasy (Încredere: 84.2%) pentru descrierea O aventură epică într-o lume fantastică plină de elfi, vrăjitori, orci și un inel puternic care trebuie distrus. (am generat eu un alt books.csv pentru ca nu l-am mai avut)
+
+ Testați cu o descriere ambiguă (de exemplu, „un detectiv pe o stație spațială”). Ce încredere
+afișează?
+Gen sugerat: SF (Încredere: 81.3%)

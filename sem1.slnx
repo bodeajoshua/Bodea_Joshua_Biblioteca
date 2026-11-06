@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="Bibliteca.ML.Training/Biblioteca.ML.Training.csproj" Id="dc93d020-f8c6-4939-851c-53d84b5b7a72" />
+  <Project Path="BookGenreTrainer/BookGenreTrainer.csproj" Id="463d1c23-b2f3-41ba-812f-813f888a9d40" />
   <Project Path="sem1/sem1.csproj" />
 </Solution>

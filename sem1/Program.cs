@@ -37,6 +37,9 @@ builder.Services
 builder.Services.AddValidation();   // validare automată pentru Minimal API
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<RecommenderTrainer>();
+builder.Services.AddPredictionEnginePool<BookText, GenrePrediction>()
+ .FromFile(modelName: "GenreClassifier",
+ filePath: "MLModels/GenreClassifier.zip", watchForChanges: true);
 var app = builder.Build();
 app.MapLibraryApi();
 

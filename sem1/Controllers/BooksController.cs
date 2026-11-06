@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using sem1.Models;
 using System.Diagnostics;
+using Microsoft.Extensions.ML;
 
 public class BooksController : Controller
 {
@@ -206,5 +207,19 @@ public class BooksController : Controller
     private bool BookExists(int? id)
     {
         return _context.Book.Any(e => e.ID == id);
+    }
+
+    public record SuggestGenreRequest(string Description);
+    [HttpPost]
+    public IActionResult SuggestGenre([FromBody] SuggestGenreRequest req,
+     [FromServices] PredictionEnginePool<BookText, GenrePrediction> pool)
+    {
+        if (string.IsNullOrWhiteSpace(req.Description))
+            return BadRequest("Descrierea este goală.");
+        var p = pool.Predict("GenreClassifier", new BookText
+        {
+            Description = req.Description
+        });
+        return Json(new { genre = p.Genre, confidence = p.Score.Max() });
     }
 }
