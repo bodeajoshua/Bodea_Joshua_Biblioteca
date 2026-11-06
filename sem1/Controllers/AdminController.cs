@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using sem1.Models;
 using Microsoft.EntityFrameworkCore;
+using sem1.Models;
+using sem1.Services;
 
 namespace sem1.Controllers
 {
-    public class AdminController(LibraryContext db) : Controller
+    public class AdminController(LibraryContext db, RecommenderTrainer trainer) : Controller
     {
         public async Task<IActionResult> Index()
         {
@@ -41,6 +42,13 @@ namespace sem1.Controllers
             db.Rating.AddRange(ratings);
             await db.SaveChangesAsync();
             TempData["Msg"] = $"Au fost importate {ratings.Count} evaluări.";
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Retrain()
+        {
+            var (rmse, count) = await trainer.TrainAsync();
+            TempData["Msg"] = $"Model reantrenat pe {count} evaluări. RMSE = {rmse:0.00}";
             return RedirectToAction(nameof(Index));
         }
     }

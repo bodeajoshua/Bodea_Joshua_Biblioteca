@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.AI;
 using Microsoft.Extensions.ML;
+using OpenAI;
+using Scalar.AspNetCore;
 using sem1.Api;
 using sem1.Data;
 using sem1.Models;
-using Scalar.AspNetCore;
-using Microsoft.Extensions.AI;
-using OpenAI;
 using System.ClientModel;
+using sem1.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +36,7 @@ builder.Services
         watchForChanges: true);
 builder.Services.AddValidation();   // validare automată pentru Minimal API
 builder.Services.AddOpenApi();
+builder.Services.AddScoped<RecommenderTrainer>();
 var app = builder.Build();
 app.MapLibraryApi();
 using (var scope = app.Services.CreateScope())

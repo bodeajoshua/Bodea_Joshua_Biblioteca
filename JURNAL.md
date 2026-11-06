@@ -87,3 +87,14 @@ Laboratorul 5:
 Pasul A1 - import ratings
 A fost importat fișierul `book-ratings.csv`.
 Număr de rânduri/evaluări importate în baza de date 6599 
+
+Pasul A2:
+Deschideți /Recommendations?userId=5 după reantrenare, fără să reporniți aplicația.
+Rezultat:
+Recomandări pentru cititorul 5
+ 
+Domain-Driven Design (scor 4.51)
+The Pragmatic Programmer (scor 3.97)
+Câinele din Baskerville (scor 3.96)
+Fata cu un tatuaj de dragon (scor 3.93)
+Designing Data-Intensive Applications (scor 3.91)
