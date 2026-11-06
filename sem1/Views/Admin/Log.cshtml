@@ -1,0 +1,68 @@
+﻿@model sem1.Models.PaginatedList<RecommendationLog>
+
+@{
+    ViewData["Title"] = "Jurnal Recomandări";
+}
+
+<h2>Jurnal Recomandări API</h2>
+
+<!-- Formular de filtrare -->
+<form asp-action="Log" method="get" class="row g-3 mb-4">
+    <div class="col-auto">
+        <label for="readerId" class="visually-hidden">ID Cititor</label>
+        <input type="number" class="form-control" id="readerId" name="readerId" value="@ViewData["CurrentReader"]" placeholder="ID Cititor">
+    </div>
+    <div class="col-auto">
+        <input type="date" class="form-control" name="startDate" value="@ViewData["StartDate"]">
+    </div>
+    <div class="col-auto">
+        <input type="date" class="form-control" name="endDate" value="@ViewData["EndDate"]">
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Filtrează</button>
+        <a asp-action="Log" class="btn btn-secondary">Resetează</a>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID Cititor</th>
+            <th>
+                <a asp-action="Log" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-readerId="@ViewData["CurrentReader"]">Data Apelului</a>
+            </th>
+            <th>ID-urile Cărților Întoarse</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ReaderId</td>
+                <td>@item.CreatedAt.ToLocalTime()</td>
+                <td>@item.BookIds</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Paginare -->
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Log"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-readerId="@ViewData["CurrentReader"]"
+   class="btn btn-default @prevDisabled btn-sm btn-outline-dark">
+    Anterior
+</a>
+<a asp-action="Log"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-readerId="@ViewData["CurrentReader"]"
+   class="btn btn-default @nextDisabled btn-sm btn-outline-dark">
+    Următor
+</a>

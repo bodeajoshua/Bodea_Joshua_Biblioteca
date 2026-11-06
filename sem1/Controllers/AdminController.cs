@@ -22,7 +22,7 @@ namespace sem1.Controllers
             }
             var ratings = new List<Rating>();
             using var reader = new StreamReader(file.OpenReadStream());
-            await reader.ReadLineAsync(); // sărim antetul
+            await reader.ReadLineAsync(); 
             string? line;
             while ((line = await reader.ReadLineAsync()) != null)
             {
@@ -51,5 +51,43 @@ namespace sem1.Controllers
             TempData["Msg"] = $"Model reantrenat pe {count} evaluări. RMSE = {rmse:0.00}";
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> Log(int? readerId, DateTime? startDate, DateTime? endDate, string sortOrder, int? pageNumber)
+        {
+            ViewData["CurrentReader"] = readerId;
+            ViewData["StartDate"] = startDate?.ToString("yyyy-MM-dd");
+            ViewData["EndDate"] = endDate?.ToString("yyyy-MM-dd");
+            ViewData["DateSortParm"] = string.IsNullOrEmpty(sortOrder) ? "date_desc" : "";
+
+            var logsQuery = db.RecommendationLog.AsQueryable();
+
+            // Filtrare dupa cititor
+            if (readerId.HasValue)
+            {
+                logsQuery = logsQuery.Where(l => l.ReaderId == readerId.Value);
+            }
+
+            // Filtrare dupa interval de date
+            if (startDate.HasValue)
+            {
+                logsQuery = logsQuery.Where(l => l.CreatedAt >= startDate.Value);
+            }
+            if (endDate.HasValue)
+            {
+                var endDateTime = endDate.Value.AddDays(1);
+                logsQuery = logsQuery.Where(l => l.CreatedAt < endDateTime);
+            }
+
+            // Sortare dupa dată
+            logsQuery = sortOrder switch
+            {
+                "date_desc" => logsQuery.OrderByDescending(l => l.CreatedAt),
+                _ => logsQuery.OrderBy(l => l.CreatedAt),
+            };
+
+            int pageSize = 10;
+            return View(await PaginatedList<RecommendationLog>.CreateAsync(logsQuery.AsNoTracking(), pageNumber ?? 1, pageSize));
+        }
+
     }
 }

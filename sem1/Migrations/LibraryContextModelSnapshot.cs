@@ -36,6 +36,29 @@ namespace sem1.Migrations
                     b.ToTable("BookPublisher");
                 });
 
+            modelBuilder.Entity("RecommendationLog", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("BookIds")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ReaderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("RecommendationLog");
+                });
+
             modelBuilder.Entity("sem1.Models.Author", b =>
                 {
                     b.Property<int>("ID")

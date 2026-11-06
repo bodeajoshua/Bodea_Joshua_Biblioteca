@@ -74,6 +74,15 @@ app.MapGet("/api/v2/readers/{id:int}/recommendations",
     recs = popular.Select(p => new RecommendationDto(
     p.BookID, titles[p.BookID], (float)p.Avg, true)).ToList();
 }
+     var log = new RecommendationLog
+     {
+         ReaderId = id,
+         CreatedAt = DateTime.UtcNow,
+         BookIds = string.Join(",", recs.Select(r => r.BookId))
+     };
+
+     db.RecommendationLog.Add(log);
+     await db.SaveChangesAsync();
      return TypedResults.Ok(recs);
  })
 .WithTags("Recomandări");

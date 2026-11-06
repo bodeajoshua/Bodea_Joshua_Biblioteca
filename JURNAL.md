@@ -121,3 +121,9 @@ Confuziile sunt logice, deoarece unele genuri literare au vocabular și caracter
  Testați cu o descriere ambiguă (de exemplu, „un detectiv pe o stație spațială”). Ce încredere
 afișează?
 Gen sugerat: SF (Încredere: 81.3%)
+
+PARTEA B SARCINI
+S1. Jurnalul Recomandărilor
+  -creat entitatea `RecommendationLog` (reține `ReaderId`, `CreatedAt` și `BookIds`) și am configurat salvarea automată a acesteia în baza de date la fiecare apel al API-ului de recomandări.
+  -implementat pagina de administrare Admin/Log, am folosit clasa `PaginatedList`
+  -adăugat funcționalități de filtrare după ID-ul cititorului și interval de date, precum și sortare după data apelului.
