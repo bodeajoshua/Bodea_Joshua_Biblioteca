@@ -98,3 +98,8 @@ The Pragmatic Programmer (scor 3.97)
 Câinele din Baskerville (scor 3.96)
 Fata cu un tatuaj de dragon (scor 3.93)
 Designing Data-Intensive Applications (scor 3.91)
+
+Pasul A3:
+Testare API Recomandări (Cold Start vs Model ML)
+-cititorul 5 (Utilizator existent): Primește recomandări personalizate calculate prin ML (fallback: false), bazate pe scorurile prezise de model (ex. Fata cu un tatuaj de dragon, scor ~3.93). Parametrul top=3 limiteaza corect numarul rezultatelor
+-Cititorul 999 (Cold Start -utilizator necunoscut): Declanșează mecanismul de fallback (fallback: true), primind cele mai populare și bine cotate cărți din baza de date pe baza mediilor de evaluare

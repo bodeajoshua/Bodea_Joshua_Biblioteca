@@ -64,3 +64,9 @@ PATCH {{host}}/api/v2/books/3
 Content-Type: application/json
  
 { "price": 0 }
+###14
+GET {{host}}/api/v2/readers/5/recommendations
+###15
+GET {{host}}/api/v2/readers/5/recommendations?top=3
+###16
+GET {{host}}/api/v2/readers/999/recommendations
