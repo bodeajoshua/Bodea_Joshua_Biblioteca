@@ -127,3 +127,9 @@ S1. Jurnalul Recomandărilor
   -creat entitatea `RecommendationLog` (reține `ReaderId`, `CreatedAt` și `BookIds`) și am configurat salvarea automată a acesteia în baza de date la fiecare apel al API-ului de recomandări.
   -implementat pagina de administrare Admin/Log, am folosit clasa `PaginatedList`
   -adăugat funcționalități de filtrare după ID-ul cititorului și interval de date, precum și sortare după data apelului.
+
+S2. Dashboard:
+-implementat pagina de administrare Admin/Dashboard incluzând carduri pentru statistici cheie (numărul total de evaluări, numărul de cititori distincți și media generală).
+-integrat biblioteca Chart.js pentru a afișa două grafice interactive:
+    1. Un grafic cu bare pentru distribuția notelor (1–5 stele).
+    2. Un al doilea grafic pentru media evaluărilor pe genuri literare (Varianta B0).

@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = "Dashboard Administrator";
+}
+
+<h2>Dashboard Evaluări și Recomandări</h2>
+
+<!-- Carduri Statistice -->
+<div class="row text-center my-4">
+    <div class="col-md-4">
+        <div class="card bg-light p-3">
+            <h5>Total Evaluări</h5>
+            <h3>@ViewBag.TotalRatings</h3>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-light p-3">
+            <h5>Cititori Distincți</h5>
+            <h3>@ViewBag.DistinctReaders</h3>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-light p-3">
+            <h5>Media Generală</h5>
+            <h3>@(((double)ViewBag.AverageRating).ToString("0.00"))</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Grafic 1: Distribuția notelor (1-5 stele) -->
+    <div class="col-md-6 mb-4">
+        <div class="card p-3">
+            <h5 class="text-center">Distribuția Notelor (1-5 stele)</h5>
+            <canvas id="ratingsChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Grafic 2: Media evaluărilor pe genuri (B0) -->
+    <div class="col-md-6 mb-4">
+        <div class="card p-3">
+            <h5 class="text-center">Media Evaluărilor pe Gen</h5>
+            <canvas id="genreChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Secțiunea cu Chart.js (CDN) -->
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Grafic 1: Distribuția Notelor
+        const ctx1 = document.getElementById('ratingsChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: ['1 Stea', '2 Stele', '3 Stele', '4 Stele', '5 Stele'],
+                datasets: [{
+                    label: 'Număr evaluări',
+                    data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.RatingDistribution)),
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                }
+            }
+        });
+
+        // Grafic 2: Media pe Genuri
+        const ctx2 = document.getElementById('genreChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.Genres)),
+                datasets: [{
+                    label: 'Media stelelor',
+                    data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.GenreAvgs)),
+                    backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: { beginAtZero: true, max: 5 }
+                }
+            }
+        });
+    </script>
+}

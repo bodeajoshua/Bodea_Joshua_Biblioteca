@@ -88,6 +88,35 @@ namespace sem1.Controllers
             int pageSize = 10;
             return View(await PaginatedList<RecommendationLog>.CreateAsync(logsQuery.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
+        // Dashboard
+        public async Task<IActionResult> Dashboard()
+        {
+            // Carduri statistice
+            ViewBag.TotalRatings = await db.Rating.CountAsync();
+            ViewBag.DistinctReaders = await db.Rating.Select(r => r.ReaderId).Distinct().CountAsync();
+            ViewBag.AverageRating = ViewBag.TotalRatings > 0 ? await db.Rating.AverageAsync(r => r.Stars) : 0;
+
+            // Grafic 1: Distribuția notelor (1-5 stele)
+            var ratingDistribution = new int[5];
+            for (int i = 1; i <= 5; i++)
+            {
+                ratingDistribution[i - 1] = await db.Rating.CountAsync(r => r.Stars == i);
+            }
+            ViewBag.RatingDistribution = ratingDistribution;
+
+            // Grafic 2: Media evaluărilor pe gen (Varianta B0)
+            var avgByGenre = await db.Rating
+                .Include(r => r.Book)
+                .Where(r => r.Book != null && r.Book.Genre != null)
+                .GroupBy(r => r.Book.Genre)
+                .Select(g => new { Genre = g.Key, Avg = g.Average(r => (double)r.Stars) })
+                .ToListAsync();
+
+            ViewBag.Genres = avgByGenre.Select(x => x.Genre).ToArray();
+            ViewBag.GenreAvgs = avgByGenre.Select(x => Math.Round(x.Avg, 2)).ToArray();
+
+            return View();
+        }
 
     }
 }
