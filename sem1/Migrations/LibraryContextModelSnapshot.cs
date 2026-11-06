@@ -181,6 +181,33 @@ namespace sem1.Migrations
                     b.ToTable("Publisher");
                 });
 
+            modelBuilder.Entity("sem1.Models.Rating", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int>("BookID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ReaderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Stars")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("BookID");
+
+                    b.ToTable("Rating");
+                });
+
             modelBuilder.Entity("BookPublisher", b =>
                 {
                     b.HasOne("sem1.Models.Book", null)
@@ -228,6 +255,17 @@ namespace sem1.Migrations
                     b.Navigation("Book");
 
                     b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("sem1.Models.Rating", b =>
+                {
+                    b.HasOne("sem1.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("sem1.Models.Author", b =>

@@ -83,3 +83,7 @@ WHERE GenreID = 2;]
 \\\[nu am reusit sa indeplinesc sarcinile 3 si 4 deoarece am intamplinat multe erori pe parcursul dezvoltarii si a trebuit sa le rezolv. Timpul a fost problema.]
 
 
+Laboratorul 5:
+Pasul A1 - import ratings
+A fost importat fișierul `book-ratings.csv`.
+Număr de rânduri/evaluări importate în baza de date 6599 
